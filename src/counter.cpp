@@ -11,12 +11,8 @@ std::map<char, int> tallyFile(std::string file){
 	for(auto c : file){
 		tally[c]++;
 	}
-	return tally;
-}
+	tally.erase('\n');
+	tally.erase(' ');
 
-void printTally(std::map<char, int> tally){
-	for(char c : alphabet){
-		if(c != '\0')
-			std::cout<<c<<":"<<tally[c]<<" ";
-	}
+	return tally;
 }

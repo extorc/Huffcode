@@ -1,16 +1,23 @@
 #pragma once
-#include <iostream>
 #include "node.h"
+#include <iostream>
 #include <string>
 
-class TreeNode : public Node{
-	public:
-		int count;
-		TreeNode(Node* n1, Node* n2):n1(n1), n2(n2){
-			//std::cout<<"Treenode count is"<<n1->getCount()<<"+"<<n2->getCount()<<std::endl;
-			count = n1->count + n2->count;
-		}
-		std::string getLabel() { return "Treenode";}
-		Node* n1;
-		Node* n2;
+class TreeNode : public Node {
+public:
+    int count;
+
+    TreeNode(std::shared_ptr<Node> n1, std::shared_ptr<Node> n2)
+        : _n1(n1), _n2(n2) {
+        std::cout << "N1 Count: " << _n1->count << "\t"
+                  << "N2 Count: " << _n2->count << std::endl;
+
+        count = _n1->count + _n2->count;
+    }
+
+    std::string getLabel() { return "Treenode"; }
+
+private:
+    std::shared_ptr<Node> _n1;
+    std::shared_ptr<Node> _n2;
 };

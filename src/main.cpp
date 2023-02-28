@@ -1,64 +1,84 @@
-#include <iostream>
-#include <fstream>
-#include <iterator>
-#include <string>
-#include "parser.h"
-#include <map>
 #include "counter.h"
-#include <vector>
 #include "node.h"
+#include "parser.h"
 #include "treenode.h"
-#include <algorithm>
 
-void sortVector(std::vector<Node*>& nodes){
-	std::sort(nodes.begin(), nodes.end(), [](Node* n1, Node* n2){        //Sort Node Vector based on Node Key count
-			return (n1->getCount() < n2->getCount());
-		}
-	);
+#include <iostream>
+#include <map>
+#include <vector>
+
+void sortVector(std::vector<std::shared_ptr<Node>> &nodes) {
+    std::sort(nodes.begin(), nodes.end(),
+              [](std::shared_ptr<Node> n1,
+                 std::shared_ptr<Node>
+                     n2) { // Sort Node Vector based on Node Key count
+                  return (n1->getCount() < n2->getCount());
+              });
 }
-void printVector(std::vector<Node*> nodes){
-	for(Node* n : nodes){                                                //Print Node Vector Contents
-		if(n->getLabel() != "")
-			std::cout<<n->getLabel()<< ":" << n->getCount()<< " ";
-	}
+
+void printVector(std::vector<std::shared_ptr<Node>> &nodes) {
+    for (auto node : nodes) { // Print Node Vector Contents
+
+        if (!node->getLabel().empty())
+            std::cout << node->getLabel() << ": " << node->getCount() << "; ";
+    }
+    std::cout << "\n\n";
 }
 
-int main (){
-	std::string file =parsefile("../src/file.txt");                      //Create a string of the file 
-	std::map<char, int> tally = tallyFile(file);                         //Create a map of the contents of the file string
+int main() {
+    std::string file =
+        parsefile("../src/file.txt"); // Create a string of the file
+    std::map<char, int> tally =
+        tallyFile(file); // Create a map of the contents of the file string
 
-	std::vector<Node* > nodes;
-	std::map<char, int>::iterator iterator;
+    std::vector<std::shared_ptr<Node>> nodes;
+    std::map<char, int>::iterator iterator;
 
-	for(iterator = tally.begin(); iterator != tally.end(); iterator++){  //Create Node Vector out of the Map
-		Node* node = new Node();
-		node->count = iterator->second;
-		node->label = iterator->first;
-		nodes.push_back(node);
-	}
-	
-	sortVector(nodes);
-	printVector(nodes);
+    ////////////////////////////////////////////////////////////////////////
+    for (iterator = tally.begin(); iterator != tally.end();
+         iterator++) { // Create Node Vector out of the Map
+        std::shared_ptr<Node> node = std::make_shared<Node>(Node());
 
-	TreeNode* treenode = new TreeNode(nodes.at(0), nodes.at(1));
-	std::cout<<treenode->count;
-	std::cout<<"\n";
+        node->count = iterator->second;
+        node->label = iterator->first;
 
-	nodes.erase(nodes.begin());
-	nodes.erase(nodes.begin()+1);
-	nodes.push_back(treenode);
-	
-	sortVector(nodes);
-	printVector(nodes);
+        nodes.push_back(node);
+    }
 
-	TreeNode* treenode2 = new TreeNode(nodes.at(0), nodes.at(1));
-	std::cout<<treenode2->count;
-	std::cout<<"\n";
+    sortVector(nodes);
+    printVector(nodes);
 
-	nodes.erase(nodes.begin());
-	nodes.erase(nodes.begin()+1);
-	nodes.push_back(treenode2);
+    ////////////////////////////////////////////////////////////////////////
+    std::shared_ptr<Node> treenode =
+        std::make_shared<TreeNode>(TreeNode(nodes.at(0), nodes.at(1)));
 
-	//sortVector(nodes);
-	printVector(nodes);
+    nodes.erase(nodes.begin());
+    nodes.erase(nodes.begin() + 1);
+    nodes.push_back(treenode);
+
+    printVector(nodes);
+    sortVector(nodes);
+    ////////////////////////////////////////////////////////////////////////
+    std::shared_ptr<Node> treenode2 =
+        std::make_shared<TreeNode>(TreeNode(nodes.at(0), nodes.at(1)));
+
+    nodes.erase(nodes.begin());
+    nodes.erase(nodes.begin() + 1);
+    nodes.push_back(treenode2);
+
+    sortVector(nodes);
+    printVector(nodes);
+    ////////////////////////////////////////////////////////////////////////
+    std::shared_ptr<Node> treenode3 =
+        std::make_shared<TreeNode>(TreeNode(nodes.at(0), nodes.at(1)));
+
+    nodes.erase(nodes.begin());
+    nodes.erase(nodes.begin() + 1);
+    nodes.push_back(treenode3);
+
+    sortVector(nodes);
+    printVector(nodes);
+    ////////////////////////////////////////////////////////////////////////
+    // sortVector(nodes);
+    printVector(nodes);
 }

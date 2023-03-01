@@ -5,20 +5,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-
-void sortVector(std::vector<std::shared_ptr<Node>> &nodes) {
-	std::sort(nodes.begin(), nodes.end(),[](std::shared_ptr<Node> n1,std::shared_ptr<Node> n2) { // Sort Node Vector based on Node Key count
-			return (n1->getCount() < n2->getCount());
-			});
-}
-
-void printVector(std::vector<std::shared_ptr<Node>> &nodes) {
-	for (auto node : nodes) { // Print Node Vector Contents
-		if (!node->getLabel().empty())
-			std::cout << node->getLabel() << ": " << node->getCount() << "; ";
-	}
-	std::cout << "\n\n";
-}
+#include "nodeVector.h"
 
 int main() {
 	std::string file = parsefile("../src/file.txt"); // Create a string of the file
@@ -41,25 +28,15 @@ int main() {
 
 	std::shared_ptr<Node> treenode = std::make_shared<TreeNode>(TreeNode(nodes.at(0), nodes.at(1)));
 
-	nodes.erase(nodes.begin());
-	nodes.erase(nodes.begin() + 1);
+	nodes.erase(nodes.begin(), nodes.begin() + 2);
 	nodes.push_back(treenode);
 
 	sortVector(nodes);
 	printVector(nodes);
 	std::shared_ptr<Node> treenode2 = std::make_shared<TreeNode>(TreeNode(nodes.at(0), nodes.at(1)));
 
-	nodes.erase(nodes.begin());
-	nodes.erase(nodes.begin() + 1);
+	nodes.erase(nodes.begin(), nodes.begin() + 2);
 	nodes.push_back(treenode2);
-
-	sortVector(nodes);
-	printVector(nodes);
-	std::shared_ptr<Node> treenode3 = std::make_shared<TreeNode>(TreeNode(nodes.at(0), nodes.at(1)));
-
-	nodes.erase(nodes.begin());
-	nodes.erase(nodes.begin() + 1);
-	nodes.push_back(treenode3);
 
 	sortVector(nodes);
 	printVector(nodes);

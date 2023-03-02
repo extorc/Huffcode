@@ -12,13 +12,13 @@ int main() {
 	std::map<char, int> tally = tallyFile(file); // Create a map of the contents of the file string
 
 	std::vector<std::shared_ptr<Node>> nodes;
-	std::map<char, int>::iterator iterator;
+	std::map<char, int>::iterator iter;
 
-	for (iterator = tally.begin(); iterator != tally.end(); iterator++) { // Create Node Vector out of the Map
+	for (iter = tally.begin(); iter != tally.end(); iter++) { // Create Node Vector out of the Map
 		std::shared_ptr<Node> node = std::make_shared<Node>(Node());
 
-		node->count = iterator->second;
-		node->label = iterator->first;
+		node->count = iter->second;
+		node->label = iter->first;
 
 		nodes.push_back(node);
 	}
@@ -37,7 +37,7 @@ int main() {
 
 	nodes.erase(nodes.begin(), nodes.begin() + 2);
 	nodes.push_back(treenode2);
-
+	
 	sortVector(nodes);
 	printVector(nodes);
 }
